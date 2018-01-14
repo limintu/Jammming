@@ -2,7 +2,7 @@
 
 Log into your Spotify account, and take over your
 
-[Jammming](https://drive.google.com/file/d/19Nam1zc0v5GImP8juD8XBGff0QRMFSAu/view?usp=sharing)
+[Jammming](https://github.com/ll10524/Jammming/blob/master/Jammming%20Screenshot.png)
 
 ## Technology
 
