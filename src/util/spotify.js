@@ -1,5 +1,8 @@
-const clientID = '7533c040aab24a45b9b6065c22b513b7';
-const clientSecret = '19cc6900514d4101817bcea8e17f7310';
+const clientID = '';
+const clientSecret = '';
+
+let accessToken = '';
+let userID = '';
 
 const urlHasToken = function(url) {
   return url.match(/access_token=([^&]*)/);
@@ -17,8 +20,17 @@ const getExpireTime = function(url) {
   return url.match(/expires_in=([^&]*)/)[1];
 }
 
-let accessToken = '';
-let userID = '';
+// const makeURL(params) {
+//   let keys = params.keys();
+//   let url = "";
+//   keys.forEach((key, index) => {
+//     if (index != keys.length - 1) {
+//       url += ``;
+//     } else {
+//
+//     }
+//   });
+// }
 
 export const Spotify = {
   getAccessToken: function (keyword) {
@@ -32,14 +44,14 @@ export const Spotify = {
         window.history.pushState('A ccess Token', null, '/');
       }
       else {
-        const endPoint = "https://accounts.spotify.com/authorize?"
+        const aurhorizeEndPoint = "https://accounts.spotify.com/authorize?"
         const id = "client_id=" + clientID;
         const redirctURL = `&redirect_uri=${window.location.href}`;
         const scope = '&scope=playlist-modify-public';
         const token = '&response_type=token';
         const state = '&state=123';
 
-        const url = endPoint + id + redirctURL + scope + token + state;
+        const url = aurhorizeEndPoint + id + redirctURL + scope + token + state;
         console.log("Authorize URL: " + url);
         window.location = url;
       }
@@ -48,12 +60,13 @@ export const Spotify = {
     if (keyword != '') {
       keyword = keyword.replace(' ', '+');
     }
+
     console.log(`Has Token: ${accessToken}`);
-    const endPoint = "https://api.spotify.com/v1/search?";
+    const searchEndPoint = "https://api.spotify.com/v1/search?";
     const query = "q=" + keyword;
     const type = "&type=track";
 
-    const url = endPoint + query + type;
+    const url = searchEndPoint + query + type;
     let myHeaders = new Headers();
     myHeaders.append('Authorization', 'Bearer ' + accessToken);
     const myInit = {
@@ -67,17 +80,14 @@ export const Spotify = {
         return response.json();
       }
       console.log("Request Searching Tracks Failed!");
-      // throw new Error("Request Failed!");
     }, networkError => {
       console.log(networkError.message);
     })
     .then(jsonResponse => {
-      console.log(jsonResponse);
       return jsonResponse;
     })
     .then(jsonObject => {
-      console.log('searchResult: ' + jsonObject);
-
+      // console.log('searchResult: ' + jsonObject);
       if (jsonObject == undefined) {
         return [];
       }
@@ -104,6 +114,7 @@ export const Spotify = {
     const myInit = {
       headers: myHeaders
     }
+
     return fetch("https://api.spotify.com/v1/me", myInit)
     .then(response => {
       if (response.ok) {
@@ -114,12 +125,12 @@ export const Spotify = {
       console.log(networkError.message);
     })
     .then(jsonResponse => {
-      userID = jsonResponse.id;
-      console.log(userID);
       return jsonResponse.id;
     })
     .then(id => {
+      userID = id;
       const playlistEndpoint = "https://api.spotify.com/v1/users/" + id + "/playlists";
+
       let myHeaders = new Headers();
       myHeaders.append('Authorization', 'Bearer ' + accessToken);
       myHeaders.append('Content-type', 'application/json');
@@ -129,6 +140,7 @@ export const Spotify = {
         body: JSON.stringify({name: playlistName})
       }
       console.log("playlistEndpoint: " + playlistEndpoint);
+
       return fetch(playlistEndpoint, myInit)
       .then(response => {
         if (response.ok) {
@@ -138,7 +150,7 @@ export const Spotify = {
         console.log("Fail to create playlist");
       }, networkError => console.log(networkError.message))
       .then(jsonResponse => {
-        console.log("New Trak's ID: " + jsonResponse.id);
+        console.log("New Track's ID: " + jsonResponse.id);
         return jsonResponse.id;
       })
     }).then(playlistID => {
@@ -151,6 +163,7 @@ export const Spotify = {
         headers: myHeaders,
         body: JSON.stringify({uris: playListTracks.map(track => track.uri)})
       }
+
       return fetch(addTrackEndpoint, myInit)
       .then(response => {
         if (response.ok) {
