@@ -20,18 +20,6 @@ const getExpireTime = function(url) {
   return url.match(/expires_in=([^&]*)/)[1];
 }
 
-// const makeURL(params) {
-//   let keys = params.keys();
-//   let url = "";
-//   keys.forEach((key, index) => {
-//     if (index != keys.length - 1) {
-//       url += ``;
-//     } else {
-//
-//     }
-//   });
-// }
-
 export const Spotify = {
   getAccessToken: function (keyword) {
     if (accessToken == '') {

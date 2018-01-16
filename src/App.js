@@ -22,17 +22,15 @@ class App extends Component {
   searchTracks(keyword) {
     const tracks = Spotify.getAccessToken(keyword)
     .then(tracks => {
-      let searchResults = [];
       if (tracks != undefined){
         if (tracks.length != 0) {
-          tracks.forEach(track => searchResults.push(track));
+          this.setState({searchResults: tracks});
+          console.log("~~setState~~: searchResults updated");
         } else {
           console.log("No Search Result!!");
         }
       }
-      console.log("~~~~setState~~~~");
       console.log(searchResults);
-      this.setState({searchResults: searchResults});
     })
   }
 
@@ -46,7 +44,7 @@ class App extends Component {
   }
 
   removeTrack(track) {
-    let list = this.state.playListTracks.filter(element => element.id != track.id);
+    const list = this.state.playListTracks.filter(element => element.id != track.id);
     this.setState({playListTracks: list});
     console.log("Remove track: " + track.id + ", " + track.name);
   }
@@ -73,12 +71,18 @@ class App extends Component {
           <SearchBar searchTracks={this.searchTracks} />
           <div className="App-playlist">
 
-            <SearchResults searchResults={this.state.searchResults}
-            onAdd={this.addTrack} isRemoval={false} />
+            <SearchResults
+              searchResults={this.state.searchResults}
+              onAdd={this.addTrack}
+              isRemoval={false}
+            />
 
-            <PlayList playList={this.state.playListTracks}
-            onRemove={this.removeTrack} onSave={this.savePlaylist}
-            isRemoval={true} />
+            <PlayList
+              playList={this.state.playListTracks}
+              onRemove={this.removeTrack}
+              onSave={this.savePlaylist}
+              isRemoval={true} 
+            />
 
           </div>
         </div>
