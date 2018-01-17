@@ -30,7 +30,6 @@ class App extends Component {
           console.log("No Search Result!!");
         }
       }
-      console.log(searchResults);
     })
   }
 
@@ -81,7 +80,7 @@ class App extends Component {
               playList={this.state.playListTracks}
               onRemove={this.removeTrack}
               onSave={this.savePlaylist}
-              isRemoval={true} 
+              isRemoval={true}
             />
 
           </div>

@@ -141,26 +141,26 @@ export const Spotify = {
         console.log("New Track's ID: " + jsonResponse.id);
         return jsonResponse.id;
       })
-    })
-    .then(playlistID => {
-      const addTrackEndpoint = `https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`
-      let myHeaders = new Headers();
-      myHeaders.append('Authorization', 'Bearer ' +accessToken);
-      myHeaders.append('Content-type', 'application/json');
-      const myInit = {
-        method: 'POST',
-        headers: myHeaders,
-        body: JSON.stringify({uris: playListTracks.map(track => track.uri)})
-      }
-
-      return fetch(addTrackEndpoint, myInit)
-      .then(response => {
-        if (response.ok) {
-          console.log("Successfully add tracks!");
-          return response.ok;
+      .then(playlistID => {
+        const addTrackEndpoint = `https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`
+        let myHeaders = new Headers();
+        myHeaders.append('Authorization', 'Bearer ' +accessToken);
+        myHeaders.append('Content-type', 'application/json');
+        const myInit = {
+          method: 'POST',
+          headers: myHeaders,
+          body: JSON.stringify({uris: playListTracks.map(track => track.uri)})
         }
-        console.log("Fail to add track");
-        return response.ok
+
+        return fetch(addTrackEndpoint, myInit)
+        .then(response => {
+          if (response.ok) {
+            console.log("Successfully add tracks!");
+            return response.ok;
+          }
+          console.log("Fail to add track");
+          return response.ok
+        })
       })
     })
   }
