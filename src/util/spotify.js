@@ -141,7 +141,8 @@ export const Spotify = {
         console.log("New Track's ID: " + jsonResponse.id);
         return jsonResponse.id;
       })
-    }).then(playlistID => {
+    })
+    .then(playlistID => {
       const addTrackEndpoint = `https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`
       let myHeaders = new Headers();
       myHeaders.append('Authorization', 'Bearer ' +accessToken);
