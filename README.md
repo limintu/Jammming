@@ -1,6 +1,6 @@
 # Jammming - build your Spotify playlist at ease
 
-Log into your Spotify account, and take over your
+Simply log into your Spotify account, and take over your playlists!
 
 ![Jammming](https://github.com/ll10524/Jammming/blob/master/Jammming%20Screenshot.png)
 
